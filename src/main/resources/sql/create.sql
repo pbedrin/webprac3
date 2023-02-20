@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS manufacturers CASCADE;
 DROP TABLE IF EXISTS models CASCADE;
 DROP TABLE IF EXISTS cars CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
-DROP TABLE IF EXISTS test_drives CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 
 
@@ -33,6 +32,7 @@ CREATE TABLE "cars" (
   "consumers_attrs" jsonb,
   "tech_attrs" jsonb,
   "history_attrs" jsonb,
+  "availability" boolean DEFAULT TRUE,
   PRIMARY KEY ("car_id"),
   CONSTRAINT "FK_cars.model_id"
     FOREIGN KEY ("model_id")
@@ -49,37 +49,22 @@ CREATE TABLE "clients" (
   PRIMARY KEY ("client_id")
 );
 
-CREATE TABLE "test_drives" (
-  "client_id" integer,
-  "car_id" integer,
-  PRIMARY KEY ("client_id", "car_id"),
-  CONSTRAINT "FK_test_drives.car_id"
-    FOREIGN KEY ("car_id")
-      REFERENCES "cars"("car_id")
-		ON DELETE CASCADE,
-  CONSTRAINT "FK_test_drives.client_id"
-    FOREIGN KEY ("client_id")
-      REFERENCES "clients"("client_id")
-		ON DELETE CASCADE
-);
-
-CREATE TYPE status AS ENUM ('В работе',  'На тест-драйве', 'Отменён', 'Завершён');
+CREATE TYPE status AS ENUM ('В работе', 'Отменён', 'Ожидание оплаты', 'Оплачен', 'Завершён', 'На тест-драйве');
 
 CREATE TABLE "orders" (
   "order_id" serial,
   "client_id" integer,
   "car_id" integer,
   "date_time" timestamp not null,
-  "need_test" boolean not null,
-  "status" status not null,
+  "tested" boolean DEFAULT FALSE,
+  "status" status DEFAULT 'В работе',
   PRIMARY KEY ("order_id"),
   CONSTRAINT "FK_orders.client_id"
     FOREIGN KEY ("client_id")
       REFERENCES "clients"("client_id")
-		ON DELETE CASCADE,
+		    ON DELETE CASCADE,
   CONSTRAINT "FK_orders.car_id"
     FOREIGN KEY ("car_id")
       REFERENCES "cars"("car_id")
-		ON DELETE CASCADE
+		    ON DELETE CASCADE
 );
-
