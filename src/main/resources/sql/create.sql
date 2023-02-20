@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS models CASCADE;
 DROP TABLE IF EXISTS cars CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
-
+DROP TYPE IF EXISTS status CASCADE;
 
 CREATE TABLE "manufacturers" (
   "manufacturer_id" serial,
@@ -56,6 +56,7 @@ CREATE TABLE "orders" (
   "client_id" integer,
   "car_id" integer,
   "date_time" timestamp not null,
+  "need_test" boolean DEFAULT FALSE,
   "tested" boolean DEFAULT FALSE,
   "status" status DEFAULT 'В работе',
   PRIMARY KEY ("order_id"),
