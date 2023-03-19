@@ -21,10 +21,21 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.core:jackson-core'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.core:jackson-annotations'
+	implementation 'org.seleniumhq.selenium:selenium-java'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.hibernate:hibernate-core:5.6.7.Final'
+	implementation 'javax.persistence:javax.persistence-api:2.2'
+	implementation 'com.vladmihalcea:hibernate-types-52:2.10.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.hibernate:hibernate-core:5.6.7.Final'
+	testImplementation 'org.postgresql:postgresql'
+	testImplementation 'org.seleniumhq.selenium:selenium-java'
 }
 
 tasks.named('test') {
