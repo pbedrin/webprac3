@@ -3,7 +3,7 @@ package ru.msu.cmc.webprac3.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "orders")
@@ -27,7 +27,7 @@ public class Order implements CommonEntity<Long> {
     private Car car_id;
 
     @Column(name = "date_time")
-    private LocalDateTime date_time;
+    private Timestamp date_time;
 
     @Column(name = "need_test")
     private Boolean need_test = false;
@@ -41,16 +41,4 @@ public class Order implements CommonEntity<Long> {
     @Column(name = "status")
     private Status status = Status.В_РАБОТЕ;
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Cars other = (Cars) o;
-//        return Objects.equals(model_id, other.model_id)
-//                && name.equals(other.name)
-//                && gender.equals(other.gender)
-//                && Objects.equals(birth, other.birth)
-//                && Objects.equals(death, other.death)
-//                && character.equals(other.character);
-//    }
 }

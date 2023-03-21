@@ -28,16 +28,4 @@ public class Model implements CommonEntity<Long> {
     @NonNull
     private String model;
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Cars other = (Cars) o;
-//        return Objects.equals(model_id, other.model_id)
-//                && name.equals(other.name)
-//                && gender.equals(other.gender)
-//                && Objects.equals(birth, other.birth)
-//                && Objects.equals(death, other.death)
-//                && character.equals(other.character);
-//    }
 }
