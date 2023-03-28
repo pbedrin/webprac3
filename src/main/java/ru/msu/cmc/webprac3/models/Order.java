@@ -2,7 +2,7 @@ package ru.msu.cmc.webprac3.models;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class Order implements CommonEntity<Long> {
     @Id
@@ -19,14 +20,15 @@ public class Order implements CommonEntity<Long> {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Client client_id;
+    @JoinColumn(nullable = false, name = "client_id")
+    private Client client;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "car_id", referencedColumnName = "id")
-    private Car car_id;
+    @JoinColumn(nullable = false, name = "car_id")
+    private Car car;
 
-    @Column(name = "date_time")
+    @Column(nullable = false, name = "date_time")
+    @NonNull
     private Timestamp date_time;
 
     @Column(name = "need_test")
@@ -36,9 +38,10 @@ public class Order implements CommonEntity<Long> {
     private Boolean tested = false;
 
     public enum Status {
-        В_РАБОТЕ, ОТМЕНЁН, ОЖИДАНИЕ_ОПЛАТЫ, ОПЛАЧЕН, ЗАВЕРШЁН, НА_ТЕСТ_ДРАЙВЕ
+        IN_WORK, CANCELED, PENDING_PAYMENT, PAID, COMPLETED, ON_TEST_DRIVE
     }
     @Column(name = "status")
-    private Status status = Status.В_РАБОТЕ;
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.IN_WORK;
 
 }

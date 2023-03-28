@@ -2,7 +2,7 @@ package ru.msu.cmc.webprac3.models;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "models")
@@ -20,8 +20,7 @@ public class Model implements CommonEntity<Long> {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manufacturer_id", referencedColumnName = "id", nullable = false)
-    @NonNull
+    @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer_id;
 
     @Column(nullable = false, unique = true, name = "model")

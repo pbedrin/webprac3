@@ -50,17 +50,42 @@ public class CarDAOImpl extends CommonDAOImpl<Car, Long> implements CarDAO {
         }
     }
 
-    public void addAttributeToCar(JsonNode carAttributes, String key, String value, Long carId) {
+    public void addAttributeToConsumersAttrs(Car car, String key, String value) {
         try (Session session = sessionFactory.openSession()) {
-            Car car = session.get(Car.class, carId);
+            //Car car = session.get(Car.class, carId);
             if (car != null) {
-                ((ObjectNode) carAttributes).put(key, value);
-                car.setConsumersAttrs(carAttributes);
+                JsonNode consumersAttrs = car.getConsumersAttrs();
+                ((ObjectNode) consumersAttrs).put(key, value);
+                car.setConsumersAttrs(consumersAttrs);
                 session.beginTransaction();
                 session.update(car);
                 session.getTransaction().commit();
-            } else {
-                throw new IllegalArgumentException("Car with id " + carId + " not found.");
+            }
+        }
+    }
+
+    public void addAttributeToTechAttrs(Car car, String key, String value) {
+        try (Session session = sessionFactory.openSession()) {
+            if (car != null) {
+                JsonNode techAttrs = car.getTechAttrs();
+                ((ObjectNode) techAttrs).put(key, value);
+                car.setConsumersAttrs(techAttrs);
+                session.beginTransaction();
+                session.update(car);
+                session.getTransaction().commit();
+            }
+        }
+    }
+
+    public void addAttributeToHistoryAttrs(Car car, String key, String value) {
+        try (Session session = sessionFactory.openSession()) {
+            if (car != null) {
+                JsonNode historyAttrs = car.getHistoryAttrs();
+                ((ObjectNode) historyAttrs).put(key, value);
+                car.setConsumersAttrs(historyAttrs);
+                session.beginTransaction();
+                session.update(car);
+                session.getTransaction().commit();
             }
         }
     }
@@ -110,5 +135,4 @@ public class CarDAOImpl extends CommonDAOImpl<Car, Long> implements CarDAO {
             return session.getEntityManagerFactory().createEntityManager().createQuery(query).getResultList();
         }
     }
-
 }

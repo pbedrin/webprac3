@@ -11,6 +11,7 @@ import java.util.List;
 public interface OrderDAO extends CommonDAO<Order, Long> {
 
     List<Order> getAllOrdersByClient(Client client);
+
     //List<Order> getAllOrdersByDateRange(Timestamp border1, Timestamp border2);
     List<Order> getByFilter(Filter filter);
 
@@ -18,10 +19,11 @@ public interface OrderDAO extends CommonDAO<Order, Long> {
     @Getter
     class Filter {
         private Long id;
-        private Long client_id;
-        private Long car_id;
-        private Timestamp date_time;
-        private Boolean need_test;
+        private Long clientId;
+        private Long carId;
+        private Timestamp startDate;
+        private Timestamp endDate;
+        private Boolean needTest;
         private Boolean tested;
         private Order.Status status;
     }

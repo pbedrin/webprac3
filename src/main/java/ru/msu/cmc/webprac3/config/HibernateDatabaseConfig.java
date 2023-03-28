@@ -17,12 +17,12 @@ public class HibernateDatabaseConfig {
     private String DB_DRIVER;
     @Value("${url}")
     private String DB_URL;
-    @Value("${username}")
+    @Value("${DB_username}")
     private String DB_USERNAME;
     @Value("${password}")
     private String DB_PASSWORD;
 
-    @Bean
+    @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(oraDataSource());

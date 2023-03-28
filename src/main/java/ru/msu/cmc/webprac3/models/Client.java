@@ -2,7 +2,8 @@ package ru.msu.cmc.webprac3.models;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "clients")
@@ -31,5 +32,8 @@ public class Client implements CommonEntity<Long> {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    private Set<Order> orders;
 
 }

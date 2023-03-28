@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ModelDAO extends CommonDAO<Model, Long> {
 
-    List<Model> getAllModelsByName(String model);
+    Model getModelByName(String model);
     List<Model> getAllModelsByManufacturer(String manufacturer);
 
 }

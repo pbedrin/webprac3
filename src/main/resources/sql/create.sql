@@ -27,7 +27,7 @@ CREATE TABLE "cars" (
   "model_id" integer,
   "vin" varchar(17) unique,
   "year" smallint,
-  "price" money,
+  "price" integer,
   "devices" text[],
   "consumers_attrs" jsonb,
   "tech_attrs" jsonb,
@@ -49,7 +49,7 @@ CREATE TABLE "clients" (
   PRIMARY KEY ("client_id")
 );
 
-CREATE TYPE status AS ENUM ('В работе', 'Отменён', 'Ожидание оплаты', 'Оплачен', 'Завершён', 'На тест-драйве');
+CREATE TYPE status AS ENUM ('IN_WORK', 'CANCELED', 'PENDING_PAYMENT', 'PAID', 'COMPLETED', 'ON_TEST_DRIVE');
 
 CREATE TABLE "orders" (
   "order_id" serial,
@@ -58,7 +58,7 @@ CREATE TABLE "orders" (
   "date_time" timestamp not null,
   "need_test" boolean DEFAULT FALSE,
   "tested" boolean DEFAULT FALSE,
-  "status" status DEFAULT 'В работе',
+  "status" status DEFAULT 'IN_WORK',
   PRIMARY KEY ("order_id"),
   CONSTRAINT "FK_orders.client_id"
     FOREIGN KEY ("client_id")

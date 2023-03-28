@@ -1,32 +1,31 @@
 package ru.msu.cmc.webprac3.models;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import org.hibernate.annotations.Type;
+
+import java.util.List;
 
 @Entity
-@Table(name = "сars")
+@Table(name = "cars")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Car implements CommonEntity<Long> {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "car_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "model_id", nullable = false)
     @NonNull
     private Model model_id;
 
@@ -37,20 +36,24 @@ public class Car implements CommonEntity<Long> {
     private Short year;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Long price;
 
-    @Column(name = "devices", columnDefinition = "text[]")
-    private String[] devices;
+    @Type(ListArrayType.class)
+    @Column(
+            name = "devices",
+            columnDefinition = "text[]"
+    )
+    private List<String> devices;
 
-    @Type(type = "jsonb")
+    @Type(JsonBinaryType.class)
     @Column(name = "consumers_attrs", columnDefinition = "jsonb")
     private JsonNode consumersAttrs;
 
-    @Type(type = "jsonb")
+    @Type(JsonBinaryType.class)
     @Column(name = "tech_attrs", columnDefinition = "jsonb")
     private JsonNode techAttrs;
 
-    @Type(type = "jsonb")
+    @Type(JsonBinaryType.class)
     @Column(name = "history_attrs", columnDefinition = "jsonb")
     private JsonNode historyAttrs;
 

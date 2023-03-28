@@ -1,8 +1,7 @@
 package ru.msu.cmc.webprac3.models;
 
 import lombok.*;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "manufacturers")
