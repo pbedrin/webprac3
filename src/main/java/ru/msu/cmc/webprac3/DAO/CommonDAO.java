@@ -9,7 +9,7 @@ public interface CommonDAO<T extends CommonEntity<ID>, ID> {
 
     Collection<T> getAll();
 
-    //void save(T entity);
+    void save(T entity);
 
     //void saveCollection(Collection<T> entities);
 

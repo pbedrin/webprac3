@@ -50,9 +50,33 @@ public abstract class CommonDAOImpl<T extends CommonEntity<ID>, ID extends Seria
     public void addEntity(T entity) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(entity);
+            session.merge(entity);
             session.getTransaction().commit();
         }
+    }
+
+    @Override
+    public void save(T entity) {
+        T newEntity;
+        try (Session session = sessionFactory.openSession()) {
+            if (entity.getId() != null) {
+                //entity.setId(null);
+                Long lastId = session.createQuery("SELECT c.id FROM Client c ORDER BY c.id DESC", Long.class)
+                        .setMaxResults(1)
+                        .getResultList()
+                        .stream()
+                        .findFirst()
+                        .orElse(null);
+
+                Long id = lastId != null ? lastId + 1 : 1L;
+                System.out.println(id);
+                entity.setId((ID)id);
+            }
+            session.beginTransaction();
+            session.merge(entity);
+            session.getTransaction().commit();
+        }
+        //return newEntity;
     }
 
     @Override
