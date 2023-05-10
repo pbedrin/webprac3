@@ -3,7 +3,11 @@ package ru.msu.cmc.webprac3.models;
 import lombok.*;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "orders")
@@ -29,7 +33,7 @@ public class Order implements CommonEntity<Long> {
 
     @Column(nullable = false, name = "date_time")
     @NonNull
-    private Timestamp date_time;
+    private LocalDateTime date_time;
 
     @Column(name = "need_test")
     private Boolean need_test = false;
@@ -37,11 +41,31 @@ public class Order implements CommonEntity<Long> {
     @Column(name = "tested")
     private Boolean tested = false;
 
+
     public enum Status {
         IN_WORK, CANCELED, PENDING_PAYMENT, PAID, COMPLETED, ON_TEST_DRIVE
     }
-    @Column(name = "status")
+    @Column(columnDefinition = "status")
     @Enumerated(EnumType.STRING)
+    //@Column(columnDefinition = "genre_info")
     private Status status = Status.IN_WORK;
 
+    public String getStatusAlias() {
+        switch (status) {
+            case IN_WORK:
+                return "В работе";
+            case CANCELED:
+                return "Отменено";
+            case PENDING_PAYMENT:
+                return "Ожидает оплаты";
+            case PAID:
+                return "Оплачено";
+            case COMPLETED:
+                return "Завершено";
+            case ON_TEST_DRIVE:
+                return "На тест-драйве";
+            default:
+                return "";
+        }
+    }
 }

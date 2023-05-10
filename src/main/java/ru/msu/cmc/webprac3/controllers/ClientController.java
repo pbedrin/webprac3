@@ -9,18 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.msu.cmc.webprac3.DAO.*;
+import ru.msu.cmc.webprac3.DAO.ClientDAO;
+import ru.msu.cmc.webprac3.DAO.ClientDAO.Filter;
+import ru.msu.cmc.webprac3.DAO.OrderDAO;
 import ru.msu.cmc.webprac3.DAO.impl.ClientDAOImpl;
 import ru.msu.cmc.webprac3.DAO.impl.OrderDAOImpl;
-import ru.msu.cmc.webprac3.models.*;
+import ru.msu.cmc.webprac3.models.Client;
+import ru.msu.cmc.webprac3.models.Order;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Controller
 public class ClientController {
@@ -36,6 +37,7 @@ public class ClientController {
         model.addAttribute("clients", clients);
         model.addAttribute("clientDAO", clientDAO);
         model.addAttribute("orderDAO", orderDAO);
+        model.addAttribute("filter", new Filter());
         return "clients";
     }
 
@@ -47,10 +49,14 @@ public class ClientController {
                     "error_message", String.format("Клиент %d не найден в базе данных", clientId));
             return "errorPage";
         }
+        List<Order> orders = orderDAO.getAllOrdersByClient(client);
+        model.addAttribute("orders", orders);
         model.addAttribute("client", client);
         model.addAttribute("clientDAO", clientDAO);
         return "client";
     }
+
+
 
     @PostMapping("/saveClient")
     public String saveClient(
@@ -134,23 +140,35 @@ public class ClientController {
 
         Long id = lastId != null ? lastId + 1 : 1L;
         client.setId(id);
-        //System.out.println(client.getId());
-        //System.out.println(client.getName());
 
         clientDAO.addEntity(client);
         return "redirect:/clients";
     }
 
-    @PostMapping("/deleteOrder")
-    public String deleteOrder(@RequestParam(name = "orderId") Long orderId, Model model) {
-        Order order = orderDAO.getById(orderId);
-        if (order == null) {
-            model.addAttribute(
-                    "error_message",
-                    String.format("Заказ #%d не найден в базе данных.", orderId));
-            return "errorPage";
-        }
-        orderDAO.delete(order);
-        return "redirect:/clients";
+
+    @GetMapping("/clients/filter")
+    public String filterClients(
+            @RequestParam(name = "status", required = false) Order.Status status,
+            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> startDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> endDate,
+            @RequestParam(name = "needTest", required = false) Boolean needTest,
+            @RequestParam(name = "tested", required = false) Boolean tested,
+            @RequestParam(name = "name", required = false) String name,
+            Model model) {
+
+        Filter filter = new Filter(status,
+                startDate.map(date -> date.atStartOfDay()).orElse(null),
+                endDate.map(date -> date.atStartOfDay()).orElse(null),
+                needTest,
+                tested,
+                name);
+
+        List<Client> filteredClients = clientDAO.getByFilter(filter);
+        model.addAttribute("clients", filteredClients);
+        model.addAttribute("clientDAO", clientDAO);
+        model.addAttribute("orderDAO", orderDAO);
+        model.addAttribute("filter", filter);
+        return "clients";
     }
+
 }

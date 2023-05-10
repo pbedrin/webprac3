@@ -60,4 +60,5 @@ public class Car implements CommonEntity<Long> {
     @Column(name = "availability")
     private Boolean availability = true;
 
+
 }

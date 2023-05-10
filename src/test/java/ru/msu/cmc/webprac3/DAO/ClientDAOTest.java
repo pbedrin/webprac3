@@ -77,8 +77,8 @@ public class ClientDAOTest {
         calendar.set(2020, Calendar.SEPTEMBER, 30, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Timestamp timestamp1 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder2.startDate(timestamp0);
-        filterBuilder2.endDate(timestamp1);
+        filterBuilder2.startDate(timestamp0.toLocalDateTime());
+        filterBuilder2.endDate(timestamp1.toLocalDateTime());
 
         List<Client> filteredClients2 = clientDAO.getByFilter(filterBuilder2.build());
         assertNotNull(filteredClients2);
@@ -94,7 +94,7 @@ public class ClientDAOTest {
         calendar.set(2020, Calendar.SEPTEMBER, 27, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         timestamp0 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder3.startDate(timestamp0);
+        filterBuilder3.startDate(timestamp0.toLocalDateTime());
 
         List<Client> filteredClients3 = clientDAO.getByFilter(filterBuilder3.build());
         assertNotNull(filteredClients3);
@@ -111,7 +111,7 @@ public class ClientDAOTest {
         calendar.set(2020, Calendar.SEPTEMBER, 30, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         timestamp1 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder4.endDate(timestamp1);
+        filterBuilder4.endDate(timestamp1.toLocalDateTime());
 
         List<Client> filteredClients4 = clientDAO.getByFilter(filterBuilder4.build());
         assertNotNull(filteredClients4);

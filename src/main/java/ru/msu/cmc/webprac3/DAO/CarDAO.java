@@ -1,8 +1,11 @@
 package ru.msu.cmc.webprac3.DAO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ru.msu.cmc.webprac3.models.Car;
+import ru.msu.cmc.webprac3.models.Manufacturer;
 
 import java.util.List;
 
@@ -18,9 +21,11 @@ public interface CarDAO extends CommonDAO<Car, Long> {
 
     @Builder
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     class Filter {
         private String model;
-        private String manufacturer;
+        private Manufacturer manufacturer;
         private Short year;
         private Long priceStart;
         private Long priceEnd;

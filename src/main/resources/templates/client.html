@@ -63,5 +63,37 @@
     <br>
     <a th:href="'/editClient?clientId=' + ${client.getId()}" class="btn btn-primary">Редактировать</a>
   </div>
+  <br>
+  <br>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID заказа</th>
+      <th>Дата</th>
+      <th>Автомобиль</th>
+      <th>Нужен тест-драйв</th>
+      <th>Протестировано</th>
+      <th>Статус</th>
+      <th>Ссылка</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.getId()}">ID</td>
+      <td th:text="${order.getDate_time()}">Дата</td>
+      <td th:text="${order.getCar().getModel_id().getManufacturer_id().getManufacturer() + ' ' + order.getCar().getModel_id().getModel() + ' ' + order.getCar().getVin()}">Автомобиль</td>
+      <td th:text="${order.getNeed_test()}">Нужен тест-драйв</td>
+      <td th:text="${order.getTested()}">Протестировано</td>
+      <td th:text="${order.getStatus()}">Статус</td>
+      <td>
+        <a th:href="'/order?orderId=' + ${order.getId()}"
+           class="btn btn-link"
+           target="_blank">
+          <i class="fa fa-link"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 </body>

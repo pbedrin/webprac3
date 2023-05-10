@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Список моделей</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-2xhMRfD5+i5L/qy5pz7J39XtLp0ENZm0KZzJDt2x/kB0zjfY2f55yLq3dV9HStfgtyJ7RbcvZ8u0cVvlxOwEww==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-2wTQwQrso/QNn+1tFZl1dJ9pV0G0fzY8V7Z1CfZtV0n0l4+8W7y4k2b4X4yGvLz8W+eZ3m5ZJxKgQ2n8W7nR5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .indent {
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="general :: page-header"> </div>
+<div class="indent">
+    <h2>Модели</h2>
+    <form action="/models/filter" method="GET" th:object="${filter}" class="mb-4">
+        <div class="row">
+            <div class="col-auto">
+                <label for="manufacturer">Производитель</label>
+                <select class="form-select" id="manufacturer" name="manufacturer">
+                    <option value="">Все</option>
+                    <option th:each="manufacturer : ${manufacturers}"
+                            th:value="${manufacturer.getId()}"
+                            th:text="${manufacturer.getManufacturer()}"
+                            th:selected="${filter != null and filter.manufacturer.manufacturer != null and filter.manufacturer.getId() == manufacturer.getId()}"></option>
+                </select>
+            </div>
+
+            <div class="col-auto">
+                <label for="name">Название</label>
+                <input type="text" class="form-control" id="name" name="name"
+                       th:value="${filter != null and filter.model != null ? filter.model : null}">
+            </div>
+
+            <div class="col d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">Применить</button>
+                <a href="/models" class="btn btn-secondary">Сбросить фильтры</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="indent">
+    <table class="table table-bordered table-warning">
+        <thead>
+        <tr>
+            <th scope="col">Номер</th>
+            <th scope="col">Производитель</th>
+            <th scope="col">Модель</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${models.isEmpty()}">
+            <td colspan="6">В базе нет ни одной модели.</td>
+        </tr>
+        <tr th:each="model: ${models}">
+            <td>
+                <a th:href="'/model?modelId=' + ${model.getId()}">
+                    <span th:text="${model.getId()}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="'/manufacturer?manufacturerId=' + ${model.getManufacturer_id().getId()}">
+                    <span th:text="${model.getManufacturer_id().getManufacturer()}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="'/model?modelId=' + ${model.getId()}">
+                    <span th:text="${model.getModel()}"></span>
+                </a>
+            </td>
+            <td>
+                <div class="d-flex">
+                    <form method="post" action="/deleteModel" class="me-2">
+                        <input type="hidden" name="modelId" th:value="${model.getId()}">
+                        <button type="submit" class="btn btn-danger" aria-label="Delete">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    <a th:href="'/editModel?modelId=' + ${model.getId()}" class="btn btn-primary">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <a id="addModelButton" href="/addModel">
+        <p>Добавить модель</p>
+    </a>
+</div>
+
+<div th:replace="general :: site-script"></div>
+
+</body>
+</html>

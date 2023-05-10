@@ -52,11 +52,11 @@ public class OrderDAOImpl extends CommonDAOImpl<Order, Long> implements OrderDAO
                 predicates.add(builder.lessThanOrEqualTo(root.get("date_time"), filter.getEndDate()));
             }
 
-            if (filter.getId() != null) {
-                //System.out.println(root.get("id").toString());
-                //System.out.println(filter.getId());
-                predicates.add(builder.equal(root.get("id"), filter.getId()));
-            }
+//            if (filter.getId() != null) {
+//                //System.out.println(root.get("id").toString());
+//                //System.out.println(filter.getId());
+//                predicates.add(builder.equal(root.get("id"), filter.getId()));
+//            }
 
             if (filter.getClientId() != null) {
                 Join<Order, Client> clients = root.join("client");

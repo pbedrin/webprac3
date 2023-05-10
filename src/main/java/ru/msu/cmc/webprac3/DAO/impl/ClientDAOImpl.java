@@ -106,10 +106,15 @@ public class ClientDAOImpl extends CommonDAOImpl<Client, Long> implements Client
                 predicates.add(builder.equal(orders.get("tested"), filter.getTested()));
             }
 
+            if (filter.getName() != null) {
+                predicates.add(builder.like(root.get("name"), "%" + filter.getName() + "%"));
+            }
+
             if (predicates.size() != 0)
                 query.select(root).where(predicates.toArray(new Predicate[0]));
-            //return null;
+
             return session.getEntityManagerFactory().createEntityManager().createQuery(query).getResultList();
+
         }
     }
 

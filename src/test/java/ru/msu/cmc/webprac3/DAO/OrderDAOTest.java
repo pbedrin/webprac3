@@ -48,7 +48,6 @@ public class OrderDAOTest {
         filterBuilder2.status(Order.Status.CANCELED);
         filterBuilder2.needTest(Boolean.FALSE);
         filterBuilder2.tested(Boolean.FALSE);
-        filterBuilder2.id(6L);
         filterBuilder2.clientId(1L);
         filterBuilder2.carId(30L);
         Calendar calendar = Calendar.getInstance();
@@ -58,8 +57,8 @@ public class OrderDAOTest {
         calendar.set(2020, Calendar.SEPTEMBER, 30, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Timestamp timestamp1 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder2.startDate(timestamp0);
-        filterBuilder2.endDate(timestamp1);
+        filterBuilder2.startDate(timestamp0.toLocalDateTime());
+        filterBuilder2.endDate(timestamp1.toLocalDateTime());
 
         List<Order> filteredClients2 = orderDAO.getByFilter(filterBuilder2.build());
         System.out.println(filteredClients2.get(0).getClient().getName());
@@ -71,14 +70,13 @@ public class OrderDAOTest {
         filterBuilder3.status(Order.Status.CANCELED);
         filterBuilder3.needTest(Boolean.FALSE);
         filterBuilder3.tested(Boolean.FALSE);
-        filterBuilder3.id(6L);
         filterBuilder3.clientId(1L);
         filterBuilder3.carId(30L);
         calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.SEPTEMBER, 27, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         timestamp0 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder3.startDate(timestamp0);
+        filterBuilder3.startDate(timestamp0.toLocalDateTime());
 
         List<Order> filteredClients3 = orderDAO.getByFilter(filterBuilder3.build());
         System.out.println(filteredClients3.get(0).getClient().getName());
@@ -90,14 +88,13 @@ public class OrderDAOTest {
         filterBuilder4.status(Order.Status.CANCELED);
         filterBuilder4.needTest(Boolean.FALSE);
         filterBuilder4.tested(Boolean.FALSE);
-        filterBuilder4.id(6L);
         filterBuilder4.clientId(1L);
         filterBuilder4.carId(30L);
         calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.OCTOBER, 30, 12, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         timestamp1 = new Timestamp(calendar.getTimeInMillis());
-        filterBuilder4.endDate(timestamp1);
+        filterBuilder4.endDate(timestamp1.toLocalDateTime());
 
         List<Order> filteredClients4 = orderDAO.getByFilter(filterBuilder4.build());
         System.out.println(filteredClients4.get(0).getClient().getName());

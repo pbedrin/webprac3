@@ -69,7 +69,7 @@ public class CarDAOImpl extends CommonDAOImpl<Car, Long> implements CarDAO {
             if (car != null) {
                 JsonNode techAttrs = car.getTechAttrs();
                 ((ObjectNode) techAttrs).put(key, value);
-                car.setConsumersAttrs(techAttrs);
+                car.setTechAttrs(techAttrs);
                 session.beginTransaction();
                 session.update(car);
                 session.getTransaction().commit();
@@ -82,13 +82,14 @@ public class CarDAOImpl extends CommonDAOImpl<Car, Long> implements CarDAO {
             if (car != null) {
                 JsonNode historyAttrs = car.getHistoryAttrs();
                 ((ObjectNode) historyAttrs).put(key, value);
-                car.setConsumersAttrs(historyAttrs);
+                car.setHistoryAttrs(historyAttrs);
                 session.beginTransaction();
                 session.update(car);
                 session.getTransaction().commit();
             }
         }
     }
+
 
     @Override
     public List<Car> getByFilter(Filter filter) {
@@ -107,11 +108,15 @@ public class CarDAOImpl extends CommonDAOImpl<Car, Long> implements CarDAO {
                 predicates.add(builder.equal(modelJoin.get("model"), filter.getModel()));
             }
 
-            if (filter.getManufacturer() != null && !filter.getManufacturer().isEmpty()) {
+            if (filter.getManufacturer() != null && filter.getManufacturer() != null) {
                 Join<Car, Model> modelJoin = root.join("model_id");
                 Join<Model, Manufacturer> manufacturerJoin = modelJoin.join("manufacturer_id");
-                predicates.add(builder.equal(manufacturerJoin.get("manufacturer"), filter.getManufacturer()));
+                predicates.add(builder.equal(manufacturerJoin.get("id"), filter.getManufacturer().getId()));
             }
+//            if (filter.getManufacturer() != null) {
+//                Join<Caer, Manufacturer> manufacturers = root.join("manufacturer_id");
+//                predicates.add(builder.equal(manufacturers.get("id"), filter.getManufacturer().getId()));
+//            }
 
             if (filter.getYear() != null) {
                 predicates.add(builder.equal(root.get("year"), filter.getYear()));

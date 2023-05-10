@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Редактировать модель</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .indent {
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="general :: page-header"></div>
+<div class="indent">
+    <h2>
+        <a href="javascript:history.back()" class="btn btn-transparent">
+            <i class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
+        </a>
+        <span style="margin-left: 10px;">Редактировать модель</span>
+    </h2>
+    <br>
+    <form method="post" action="/saveModel">
+        <input type="hidden" name = "modelId" th:value="${model.getId()}">
+
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="modelName">Название</label>
+            <div class="col-sm-10">
+                <input type="text" id="modelName" name="modelName" required th:value="${model.getModel()}"><br><br>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label" for="manufacturerId">Производитель</label>
+            <div class="col-sm-10">
+                <select class="form-select" id="manufacturerId" name="manufacturerId" style="width:auto; display: inline-block;">
+                    <option value="">Производитель</option>
+                    <option th:each="manufacturer : ${manufacturers}"
+                            th:value="${manufacturer.getId()}"
+                            th:selected="${model.getManufacturer_id().getId() == manufacturer.getId()}"
+                            th:text="${manufacturer.getManufacturer()}"></option>
+                </select>
+            </div>
+        </div>
+
+        <input id="submitButton" type="submit" class="btn btn-primary" value="Сохранить">
+    </form>
+</div>
+</body>
+</html>

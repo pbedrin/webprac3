@@ -18,6 +18,69 @@
 </head>
 <body>
 <div th:replace="general :: page-header"> </div>
+<div class="indent">
+  <h2>Клиенты</h2>
+<form action="/clients/filter" method="GET" th:object="${filter}" class="mb-4">
+  <div class="row">
+    <div class="col-auto">
+      <label for="status">Статус заказа</label>
+      <select class="form-select" id="status" name="status">
+        <option value="">All</option>
+        <option th:each="statusEnum : ${T(ru.msu.cmc.webprac3.models.Order$Status).values()}"
+                th:value="${statusEnum}"
+                th:text="${statusEnum}"
+                th:selected="${filter != null and filter.status != null and filter.status.name() == statusEnum.name()}"></option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <label for="startDate">Заказ с</label>
+      <input type="date" class="form-control" id="startDate" name="startDate"
+             th:value="${filter != null && filter.startDate != null ? #temporals.format(filter.startDate, 'yyyy-MM-dd') : null}">
+    </div>
+
+    <div class="col-auto">
+      <label for="endDate">Заказ до</label>
+      <input type="date" class="form-control" id="endDate" name="endDate"
+             th:value="${filter != null && filter.endDate != null ? #temporals.format(filter.endDate, 'yyyy-MM-dd') : null}">
+    </div>
+
+    <div class="col-auto">
+      <label for="needTest">Нужен тест-драйв</label>
+      <select class="form-select" id="needTest" name="needTest">
+        <option value="">All</option>
+        <option value="true"
+                th:selected="${filter != null and filter.needTest != null and filter.needTest}">Yes</option>
+        <option value="false"
+                th:selected="${filter != null and filter.needTest != null and !filter.needTest}">No</option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <label for="tested">Тестировал</label>
+      <select class="form-select" id="tested" name="tested">
+        <option value="">All</option>
+        <option value="true"
+                th:selected="${filter != null and filter.tested != null and filter.tested}">Yes</option>
+        <option value="false"
+                th:selected="${filter != null and filter.tested != null and !filter.tested}">No</option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <label for="name">ФИО</label>
+      <input type="text" class="form-control" id="name" name="name"
+             th:value="${filter != null and filter.name != null ? filter.name : null}">
+    </div>
+
+    <div class="col d-flex align-items-end">
+      <button type="submit" class="btn btn-primary me-2">Применить</button>
+      <a href="/clients" class="btn btn-secondary">Сбросить фильтры</a>
+    </div>
+  </div>
+
+</form>
+</div>
 
 <div class="indent">
   <table class="table table-bordered table-warning">
@@ -77,9 +140,9 @@
               <td>
                 <form method="post" action="/deleteOrder">
                   <input type="hidden" name="orderId" th:value="${order.getId()}">
-                  <a class="btn btn-danger" aria-label="Delete">
+                  <button type="submit" class="btn btn-danger" aria-label="Delete">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
-                  </a>
+                  </button>
                 </form>
               </td>
             </tr>
